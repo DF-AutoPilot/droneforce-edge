@@ -26,8 +26,8 @@ A Python utility for automatically uploading ArduPilot flight logs to Firebase S
 
 3. Create a `.env` file with the following variables:
    ```
-   FIREBASE_CREDENTIALS_PATH=/path/to/your/firebase-credentials.json
-   FIREBASE_STORAGE_BUCKET=your-firebase-bucket-name.appspot.com
+   CREDENTIALS_PATH=/path/to/your/firebase-credentials.json
+   STORAGE_BUCKET=your-firebase-bucket-name.appspot.com
    LOGS_DIR=/path/to/ardupilot/logs
    TASK_ID=your-unique-task-identifier
    ```

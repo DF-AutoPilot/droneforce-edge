@@ -117,8 +117,8 @@ def initialize_firebase(credentials_path: str, bucket_name: str) -> Optional[fir
     Initialize Firebase Admin SDK with the given credentials.
     
     Args:
-        credentials_path: Path to the Firebase credentials JSON file
-        bucket_name: Name of the Firebase Storage bucket
+        credentials_path: Path to the credentials JSON file
+        bucket_name: Name of the Storage bucket
         
     Returns:
         Firebase app instance or None if initialization failed
@@ -165,37 +165,37 @@ def load_config() -> Tuple[str, str, str, str]:
     Load configuration from environment variables.
     
     Returns:
-        Tuple of (firebase_credentials_path, firebase_storage_bucket, logs_dir, task_id)
+        Tuple of (credentials_path, storage_bucket, logs_dir, task_id)
     """
     # Load environment variables from .env file
     load_dotenv()
     
     # Get required environment variables
-    firebase_credentials_path = os.environ.get("FIREBASE_CREDENTIALS_PATH")
-    firebase_storage_bucket = os.environ.get("FIREBASE_STORAGE_BUCKET")
+    credentials_path = os.environ.get("CREDENTIALS_PATH")
+    storage_bucket = os.environ.get("STORAGE_BUCKET")
     logs_dir = os.environ.get("LOGS_DIR")
     task_id = os.environ.get("TASK_ID")
     
     # Validate required environment variables
-    if not firebase_credentials_path:
-        logger.error("FIREBASE_CREDENTIALS_PATH environment variable is not set")
-    if not firebase_storage_bucket:
-        logger.error("FIREBASE_STORAGE_BUCKET environment variable is not set")
+    if not credentials_path:
+        logger.error("CREDENTIALS_PATH environment variable is not set")
+    if not storage_bucket:
+        logger.error("STORAGE_BUCKET environment variable is not set")
     if not logs_dir:
         logger.error("LOGS_DIR environment variable is not set")
     if not task_id:
         logger.error("TASK_ID environment variable is not set")
     
-    return firebase_credentials_path, firebase_storage_bucket, logs_dir, task_id
+    return credentials_path, storage_bucket, logs_dir, task_id
 
 
 def main():
     """Main entry point for the script."""
     # Load configuration
-    firebase_credentials_path, firebase_storage_bucket, logs_dir, task_id = load_config()
+    credentials_path, storage_bucket, logs_dir, task_id = load_config()
     
     # Validate configuration
-    if not all([firebase_credentials_path, firebase_storage_bucket, logs_dir, task_id]):
+    if not all([credentials_path, storage_bucket, logs_dir, task_id]):
         logger.error("Missing required configuration. Please check your .env file.")
         return 1
     
@@ -206,7 +206,7 @@ def main():
         return 1
     
     # Initialize Firebase
-    app = initialize_firebase(firebase_credentials_path, firebase_storage_bucket)
+    app = initialize_firebase(credentials_path, storage_bucket)
     if not app:
         logger.error("Failed to initialize Firebase")
         return 1
