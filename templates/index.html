@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DroneForce Log Uploader</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            margin: 0;
+            padding: 0;
+            background-color: #f5f7fa;
+            color: #333;
+        }
+        .container {
+            width: 90%;
+            max-width: 700px;
+            margin: 2rem auto;
+            padding: 2rem;
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        h1, h2 {
+            color: #1a73e8;
+        }
+        .logo {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+        label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: bold;
+        }
+        input[type="text"],
+        input[type="file"] {
+            width: 100%;
+            padding: 0.8rem;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+        input[type="file"] {
+            background-color: #f9f9f9;
+        }
+        button {
+            background-color: #1a73e8;
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.3s;
+        }
+        button:hover {
+            background-color: #0d66da;
+        }
+        .flash-message {
+            padding: 12px;
+            margin-bottom: 20px;
+            border-radius: 4px;
+        }
+        .flash-error {
+            background-color: #ffebee;
+            color: #c62828;
+        }
+        .flash-success {
+            background-color: #e8f5e9;
+            color: #2e7d32;
+        }
+        footer {
+            text-align: center;
+            margin-top: 2rem;
+            color: #666;
+            font-size: 0.9rem;
+        }
+        .file-info {
+            margin-top: 10px;
+            font-size: 0.9rem;
+        }
+        #file-name {
+            font-weight: bold;
+        }
+        #file-size {
+            color: #666;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="logo">
+            <h1>DroneForce Log Uploader</h1>
+        </div>
+        
+        {% with messages = get_flashed_messages() %}
+            {% if messages %}
+                {% for message in messages %}
+                    <div class="flash-message">{{ message }}</div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+        
+        <form action="/upload" method="POST" enctype="multipart/form-data">
+            <div class="form-group">
+                <label for="task_id">Task ID:</label>
+                <input type="text" id="task_id" name="task_id" placeholder="e.g., flight_123" required>
+                <small>This will be used to identify the log in Firebase Storage</small>
+            </div>
+            
+            <div class="form-group">
+                <label for="logfile">Select Log File (.bin):</label>
+                <input type="file" id="logfile" name="logfile" accept=".bin" required onchange="updateFileInfo()">
+                <div class="file-info">
+                    <span id="file-name">No file selected</span>
+                    <span id="file-size"></span>
+                </div>
+            </div>
+            
+            <div class="form-group">
+                <button type="submit">Upload to Firebase</button>
+            </div>
+        </form>
+        
+        <footer>
+            <p>DroneForce Protocol &copy; 2025</p>
+        </footer>
+    </div>
+
+    <script>
+        function updateFileInfo() {
+            const fileInput = document.getElementById('logfile');
+            const fileNameSpan = document.getElementById('file-name');
+            const fileSizeSpan = document.getElementById('file-size');
+            
+            if (fileInput.files.length > 0) {
+                const file = fileInput.files[0];
+                fileNameSpan.textContent = file.name;
+                
+                // Format file size
+                const size = file.size;
+                let formattedSize;
+                if (size < 1024) {
+                    formattedSize = size + ' bytes';
+                } else if (size < 1024 * 1024) {
+                    formattedSize = (size / 1024).toFixed(2) + ' KB';
+                } else {
+                    formattedSize = (size / (1024 * 1024)).toFixed(2) + ' MB';
+                }
+                
+                fileSizeSpan.textContent = ` (${formattedSize})`;
+            } else {
+                fileNameSpan.textContent = 'No file selected';
+                fileSizeSpan.textContent = '';
+            }
+        }
+    </script>
+</body>
+</html>

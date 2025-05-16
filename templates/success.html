@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Upload Success - DroneForce Log Uploader</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            margin: 0;
+            padding: 0;
+            background-color: #f5f7fa;
+            color: #333;
+        }
+        .container {
+            width: 90%;
+            max-width: 700px;
+            margin: 2rem auto;
+            padding: 2rem;
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        h1, h2 {
+            color: #1a73e8;
+        }
+        .success-icon {
+            text-align: center;
+            font-size: 4rem;
+            color: #4caf50;
+            margin: 1rem 0;
+        }
+        .details {
+            background-color: #e8f5e9;
+            padding: 1rem;
+            border-radius: 4px;
+            margin: 1.5rem 0;
+        }
+        .details p {
+            margin: 0.5rem 0;
+        }
+        .back-link {
+            display: inline-block;
+            margin-top: 1.5rem;
+            background-color: #1a73e8;
+            color: white;
+            text-decoration: none;
+            padding: 10px 20px;
+            border-radius: 4px;
+            transition: background-color 0.3s;
+        }
+        .back-link:hover {
+            background-color: #0d66da;
+        }
+        footer {
+            text-align: center;
+            margin-top: 2rem;
+            color: #666;
+            font-size: 0.9rem;
+        }
+        .url-container {
+            word-break: break-all;
+            background-color: #f5f5f5;
+            padding: 10px;
+            border-radius: 4px;
+            margin: 10px 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Upload Successful!</h1>
+        
+        <div class="success-icon">✓</div>
+        
+        <p>Your log file has been successfully uploaded to Firebase Storage.</p>
+        
+        <div class="details">
+            <h2>Upload Details</h2>
+            <p><strong>File:</strong> {{ filename }}</p>
+            <p><strong>Task ID:</strong> {{ task_id }}</p>
+            {% if url %}
+            <p><strong>Download URL:</strong></p>
+            <div class="url-container">{{ url }}</div>
+            {% endif %}
+        </div>
+        
+        <a href="/" class="back-link">Upload Another Log</a>
+        
+        <footer>
+            <p>DroneForce Protocol &copy; 2025</p>
+        </footer>
+    </div>
+</body>
+</html>
